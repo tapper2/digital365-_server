@@ -20,8 +20,9 @@ class LandingPageEditorController extends Controller
 
         $landingPage->load('assets');
 
-        $logoAsset   = $landingPage->assets->firstWhere('type', 'logo');
-        $imageAssets = $landingPage->assets->where('type', 'image');
+        $logoAsset      = $landingPage->assets->firstWhere('type', 'logo');
+        $imageAssets    = $landingPage->assets->where('type', 'image');
+        $referenceAsset = $landingPage->assets->firstWhere('type', 'reference');
 
         // Resolve selected style prompts from DB
         $styleIds     = array_map('intval', $landingPage->settings['selected_style_ids'] ?? []);
@@ -32,6 +33,8 @@ class LandingPageEditorController extends Controller
             ->values()
             ->toArray();
 
+        $variantContents = $landingPage->settings['variant_contents'] ?? [];
+
         $input = [
             'landing_page_id' => $landingPage->id,
             'title'           => $landingPage->title,
@@ -40,7 +43,9 @@ class LandingPageEditorController extends Controller
             'settings'        => $landingPage->settings ?? [],
             'logo_path'       => $logoAsset?->path,
             'image_paths'     => $imageAssets->pluck('path')->values()->toArray(),
+            'reference_path'  => $referenceAsset?->path,
             'style_prompts'   => $stylePrompts,
+            'variant_contents' => $variantContents,
         ];
 
         $result    = $this->ai->generateMarketingImages($input);

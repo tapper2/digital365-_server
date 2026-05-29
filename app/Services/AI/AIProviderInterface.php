@@ -22,6 +22,21 @@ interface AIProviderInterface
     public function generateMarketingImages(array $input): array;
 
     /**
+     * Generate 20+ content idea options per field for the content picker step.
+     *
+     * @return array{
+     *     headline_line1: string[],
+     *     headline_line2: string[],
+     *     headline_line3: string[],
+     *     trust_badge: string[],
+     *     subtext: string[],
+     *     cta: string[],
+     *     services: array<array{icon: string, label: string}>
+     * }
+     */
+    public function generateContentIdeas(array $input): array;
+
+    /**
      * Apply a natural-language edit instruction to existing HTML.
      * (Used for legacy HTML-based editing if needed.)
      */

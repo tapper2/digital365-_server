@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ContentIdeasController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LandingPageEditorController;
 use App\Http\Controllers\LandingPageStyleController;
@@ -36,6 +37,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Styles catalogue
     Route::get('styles', [LandingPageStyleController::class, 'index']);
+
+    // Content ideas generator
+    Route::post('content-ideas', [ContentIdeasController::class, 'generate']);
 
     // Landing Pages CRUD
     Route::get('landing-pages', [LandingPageController::class, 'index']);

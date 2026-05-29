@@ -38,6 +38,7 @@ class LandingPageController extends Controller
             'form_fields.*'         => ['string'],
             'settings'              => ['nullable', 'array'],
             'logo'                  => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,svg,webp', 'max:5120'],
+            'reference_page'        => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp', 'max:10240'],
             'images'                => ['nullable', 'array', 'max:5'],
             'images.*'              => ['file', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
         ]);
@@ -58,6 +59,17 @@ class LandingPageController extends Controller
                 'type'            => 'logo',
                 'path'            => $path,
                 'original_name'   => $request->file('logo')->getClientOriginalName(),
+            ]);
+        }
+
+        // Handle reference landing page upload
+        if ($request->hasFile('reference_page')) {
+            $path = $this->uploader->storeAsset($request->file('reference_page'), $page->id, 'reference');
+            LandingPageAsset::create([
+                'landing_page_id' => $page->id,
+                'type'            => 'reference',
+                'path'            => $path,
+                'original_name'   => $request->file('reference_page')->getClientOriginalName(),
             ]);
         }
 
